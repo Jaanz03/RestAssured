@@ -9,12 +9,12 @@ public class Orderdetails {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	public String getProductOrderedID() {
-		return productOrderedID;
+	public String getProductOrderedId() {
+		return productOrderedId;
 	}
-	public void setProductOrderedID(String productOrderedID) {
-		this.productOrderedID = productOrderedID;
+	public void setProductOrderedId(String productOrderedId) {
+		this.productOrderedId = productOrderedId;
 	}
-	private	String	productOrderedID;
+	private	String	productOrderedId;
 
 }

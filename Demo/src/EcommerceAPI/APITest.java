@@ -6,6 +6,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.testng.Assert;
+
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -50,11 +52,12 @@ public class APITest {
 		
 	// Create Order
 		
-		RequestSpecification createorderbase = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com").addHeader("authorization", AuthToken).setContentType(ContentType.JSON).build();
+		RequestSpecification createorderbase = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com").
+				addHeader("authorization", AuthToken).setContentType(ContentType.JSON).build();
 		
 		Orderdetails	ord = new Orderdetails();
 		ord.setCountry("India");
-		ord.setProductOrderedID(product);
+		ord.setProductOrderedId(product);
 		
 		List<Orderdetails>	orderslist = new ArrayList<Orderdetails>();
 		orderslist.add(ord);
@@ -69,12 +72,17 @@ public class APITest {
 		
 		//Delete Order
 		
-		RequestSpecification deleteorderbase = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com").addHeader("authorization", AuthToken).setContentType(ContentType.JSON).build();
+		RequestSpecification deleteorderbase = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com").
+				addHeader("authorization", AuthToken).setContentType(ContentType.JSON).build();
 		
-		String	deleteprodres= deleteorderbase.when().delete("/api/ecom/product/delete-product/{product}").then().log().all().extract().response().asString();
+		RequestSpecification  deleteProdreq= given().log().all().spec(deleteorderbase).pathParam("productid", product);
+		
+		
+		String	deleteprodres= deleteProdreq.when().delete("/api/ecom/product/delete-product/{productid}").then().log().all().extract().response().asString();
 		
 		JsonPath js1 = new JsonPath(deleteprodres);
 		String	prodmessage= js1.get("message");
+		Assert.assertEquals("Product Deleted Successfully", prodmessage);
 		System.out.println(prodmessage);
 	}
 
